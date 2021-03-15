@@ -1,11 +1,15 @@
-const db = require("./models");
-db.Workout.create({ name: "Workout Tracker" })
-  .then(dbWorkout => {
-    console.log(dbWorkout);
-  })
-  .catch(({message}) => {
-    console.log(message);
-  });
+const db = require("../models");
+module.exports = function(app) {
+
+app.get("/api/workouts", (req, res) => {
+  db.Workout.find({})
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+    res.json(err);
+    });
+});
 
 app.put("/api/workouts/", ({body}, res) => {
   db.Workout.create(body)
@@ -18,15 +22,7 @@ app.put("/api/workouts/", ({body}, res) => {
     });
 });
 
-app.get("/api/workouts", (req, res) => {
-  db.Workout.find({})
-    .then(dbWorkout => {
-      res.json(dbWorkout);
-    })
-    .catch(err => {
-      res.json(err);
-    });
-});
+
 
 app.get("/api/workouts/range", (req, res) => {
   db.Workout.find({})
@@ -48,4 +44,4 @@ app.post("/api/workouts/", (req, res) => {
       res.json(err);
     });
 });
-
+};
