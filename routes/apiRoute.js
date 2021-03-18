@@ -11,7 +11,7 @@ app.get("/api/workouts", (req, res) => {
     });
 });
 
-app.put("/api/workouts/", ({body}, res) => {
+app.put("/api/workouts/:id", ({body}, res) => {
   db.Workout.create(body)
     .then(({_id}) => db.Workout.findOneAndUpdate({}, { $push: { exercises: _id } }, { new: true }))
     .then(dbWorkout => {
@@ -34,9 +34,8 @@ app.get("/api/workouts/range", (req, res) => {
     });
 });
 
-app.post("/api/workouts/", (req, res) => {
-  db.Workout.create({})
-    .populate("exercises")
+app.post("/api/workouts", (req, res) => {
+  db.Workout.create(req.body)
     .then(dbWorkout => {
       res.json(dbWorkout);
     })
